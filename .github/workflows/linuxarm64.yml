@@ -44,13 +44,13 @@ jobs:
         mkdir -p appdir/usr/bin ; strip OCVWarp.bin ; cp OCVWarp.bin ./appdir/usr/bin/OCVWarp.bin
         mkdir -p appdir/usr/share/applications ; cp ../appdir/OCVWarp.desktop ./appdir/usr/share/applications/
         mkdir -p appdir/usr/share/icons/hicolor/256x256/apps ; cp ../appdir/OCVWarp.png ./appdir/usr/share/icons/hicolor/256x256/apps/
-        wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
-        chmod a+x linuxdeployqt-continuous-x86_64.AppImage
+        wget -c -nv "https://github.com/probonopd/go-appimage/releases/download/continuous/appimagetool-869-aarch64.AppImage"
+        chmod a+x appimagetool-869-aarch64.AppImage
         unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
         export VERSION=$(git rev-parse --short HEAD) # linuxdeployqt uses this for naming the file
-        ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -bundle-non-qt-libs
-        ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage
-        mv OCVWarp*.AppImage OCVWarp-5-testing.00-x86_64.AppImage -v
+        ./appimagetool-869-aarch64.AppImage appdir/usr/share/applications/*.desktop -bundle-non-qt-libs
+        ./appimagetool-869-aarch64.AppImage appdir/usr/share/applications/*.desktop -appimage
+        mv OCVWarp*.AppImage OCVWarp-5-testing.00-arm64.AppImage -v
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4
@@ -59,4 +59,4 @@ jobs:
         name: OCVWarp-appimage
         # optional, default is artifact
         # A file, directory or wildcard pattern that describes what to upload
-        path: build/OCVWarp*x86_64.AppImage
+        path: build/OCVWarp*.AppImage

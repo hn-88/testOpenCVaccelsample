@@ -1,4 +1,4 @@
-oyname: Linux ARM64
+name: Linux ARM64
 
 on: workflow_dispatch
 

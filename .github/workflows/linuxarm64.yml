@@ -1,4 +1,4 @@
-name: Linux ARM64
+oyname: Linux ARM64
 
 on: workflow_dispatch
 
@@ -48,8 +48,8 @@ jobs:
         chmod a+x appimagetool-869-aarch64.AppImage
         unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
         export VERSION=$(git rev-parse --short HEAD) # linuxdeployqt uses this for naming the file
-        ./appimagetool-869-aarch64.AppImage appdir/usr/share/applications/*.desktop -bundle-non-qt-libs
-        ./appimagetool-869-aarch64.AppImage appdir/usr/share/applications/*.desktop -appimage
+        ./appimagetool-869-aarch64.AppImage deploy appdir/usr/share/applications/*.desktop
+        ./appimagetool-869-aarch64.AppImage ./appdir
         mv OCVWarp*.AppImage OCVWarp-5-testing.00-arm64.AppImage -v
 
     - name: Upload a Build Artifact

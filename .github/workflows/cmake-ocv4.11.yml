@@ -68,6 +68,7 @@ jobs:
         make -j10 -C opencv/build
 
     - name: Install OpenCV
+      run: |
         sudo make -C opencv/build install
         sudo ldconfig
     

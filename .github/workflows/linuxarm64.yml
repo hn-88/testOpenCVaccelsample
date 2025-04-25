@@ -19,6 +19,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+      with:
+        # The branch, tag or SHA to checkout. 
+        ref: 'v4.01'
     
     - name: Install OpenCV
       # We're using the distro's default opencv build, since that should be sufficient.
@@ -50,7 +53,7 @@ jobs:
         export VERSION=$(git rev-parse --short HEAD) # linuxdeployqt uses this for naming the file
         ./appimagetool-869-aarch64.AppImage deploy appdir/usr/share/applications/*.desktop
         ./appimagetool-869-aarch64.AppImage ./appdir
-        mv OCVWarp*.AppImage OCVWarp-5-testing.00-arm64.AppImage -v
+        mv OCVWarp*.AppImage OCVWarp-4.01-arm64.AppImage -v
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4

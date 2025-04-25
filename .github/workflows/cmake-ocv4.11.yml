@@ -37,7 +37,7 @@ jobs:
         
     - name: Build and install OpenCV
       run: |
-        // cd opencv
+        # cd opencv
         cmake -S opencv -B opencv/build \
              -D CMAKE_CXX_COMPILER="g++" \
              -D CMAKE_INSTALL_PREFIX="/usr/local" \

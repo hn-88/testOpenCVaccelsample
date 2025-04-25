@@ -37,11 +37,10 @@ jobs:
         
     - name: Build and install OpenCV
       run: |
-        # cd opencv
         cmake -S opencv -B opencv/build \
              -D CMAKE_CXX_COMPILER="g++" \
              -D CMAKE_INSTALL_PREFIX="/usr/local" \
-             -D WITH_TBB=ON \ 
+             -D WITH_TBB=ON \
              -D WITH_IPP=ON \
              -D BUILD_NEW_PYTHON_SUPPORT=OFF \
              -D WITH_V4L=ON \
@@ -54,7 +53,7 @@ jobs:
         make -j10 -C opencv/build
         sudo make -C opencv/build install
         sudo ldconfig
-
+    
     - name: Configure CMake for OCVWarp
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type

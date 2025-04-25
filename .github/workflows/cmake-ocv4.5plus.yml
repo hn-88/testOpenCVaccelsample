@@ -19,13 +19,49 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
-    - name: Install OpenCV
-      # We're using the distro's default opencv build, since that should be sufficient.
+    - name: Install OpenCV dependencies
+      # We're using the latest release opencv build, currently 4.11.0
       run: |
         sudo apt update
-        sudo apt install libopencv-dev python3-opencv
+        git clone https://github.com/opencv/opencv.git --branch "4.11.0" --depth 1
+        git clone https://github.com/opencv/opencv_contrib.git --branch "4.11.0" --depth 1
+        # from https://github.com/Dovyski/setup-opencv-action/blob/master/index.js
+        sudo apt-get remove x264 libx264-dev -y
+        sudo apt-get install -y build-essential checkinstall git cmake pkg-config \
+            yasm  git gfortran libjpeg8-dev libjasper1 libjasper-dev libpng-dev \
+            libavcodec-dev libavformat-dev libswscale-dev libdc1394-22-dev 
+            libxine2-dev libv4l-dev \
+            libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev  \
+            qt5-default libgtk2.0-dev libtbb-dev  \
+            libatlas-base-dev  \
+            libfaac-dev libmp3lame-dev libtheora-dev  \
+            libvorbis-dev libxvidcore-dev  \
+            libopencore-amrnb-dev libopencore-amrwb-dev \
+            libtbb2 libtiff-dev  \
+            python-dev python-numpy  \
+            x264 v4l-utils  
 
-    - name: Configure CMake
+    - name: Build and install OpenCV
+      run: |
+        // cd opencv
+        cmake -S opencv -B opencv/build \
+             -D CMAKE_CXX_COMPILER="g++" \
+             -D CMAKE_INSTALL_PREFIX="/usr/local" \
+             -D WITH_TBB=ON \ 
+             -D WITH_IPP=ON \
+             -D BUILD_NEW_PYTHON_SUPPORT=OFF \
+             -D WITH_V4L=ON \
+             -D INSTALL_C_EXAMPLES=OFF \
+             -D INSTALL_PYTHON_EXAMPLES=OFF \
+             -D BUILD_EXAMPLES=OFF \
+             -D WITH_QT=ON \
+             -D WITH_OPENGL=ON \
+             -D OPENCV_EXTRA_MODULES_PATH=./opencv_contrib/modules
+        make -j10 -C opencv/build
+        sudo make -C opencv/build install
+        sudo ldconfig
+
+    - name: Configure CMake for OCVWarp
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}

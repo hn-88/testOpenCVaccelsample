@@ -31,12 +31,27 @@ jobs:
           libatlas-base-dev libopenexr-dev libgstreamer-plugins-base1.0-dev \
           libgstreamer1.0-dev python3-dev python3-numpy libtbb2 libtbb-dev \
           libjpeg-dev libpng-dev libtiff-dev libdc1394-dev gfortran  
+        
+    - name: Cache OpenCV
+      id: cache-ocv
+      uses: actions/cache@v4
+      with:
+        path: opencv
+        key: ${{ runner.os }}-opencv-4.11.0
+
+    - name: Cache OpenCV-contrib
+      id: cache-ocv-contrib
+      uses: actions/cache@v4
+      with:
+        path: opencv_contrib
+        key: ${{ runner.os }}-opencv_contrib-4.11.0
+        
+    - name: Build OpenCV if not cached
+      if: steps.cache-ocv.outputs.cache-hit != 'true'
+      run: |
         git clone https://github.com/opencv/opencv.git --branch "4.11.0" --depth 1
         git clone https://github.com/opencv/opencv_contrib.git --branch "4.11.0" --depth 1
-        # from https://github.com/Dovyski/setup-opencv-action/blob/master/index.js
-        
-    - name: Build and install OpenCV
-      run: |
+        # from https://github.com/Dovyski/setup-opencv-action/blob/master/index.js        
         cmake -S opencv -B opencv/build \
              -D CMAKE_CXX_COMPILER="g++" \
              -D CMAKE_INSTALL_PREFIX="/usr/local" \
@@ -51,6 +66,8 @@ jobs:
              -D WITH_OPENGL=ON \
              -D OPENCV_EXTRA_MODULES_PATH=./opencv_contrib/modules
         make -j10 -C opencv/build
+
+    - name: Install OpenCV
         sudo make -C opencv/build install
         sudo ldconfig
     

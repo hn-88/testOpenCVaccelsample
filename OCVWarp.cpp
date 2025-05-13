@@ -75,6 +75,19 @@ y = 2 * latitude / PI
 // this is for mkdir
 
 #include <opencv2/opencv.hpp>
+// including the cuda example headers
+#include <iostream>
+
+#include "opencv2/opencv_modules.hpp"
+
+// #if defined(HAVE_OPENCV_CUDACODEC)
+
+#include <vector>
+#include <numeric>
+
+#include "opencv2/core.hpp"
+#include "opencv2/cudacodec.hpp"
+#include "opencv2/highgui.hpp"
 #include "tinyfiledialogs.h"
 #define CVUI_IMPLEMENTATION
 #include "cvui.h"

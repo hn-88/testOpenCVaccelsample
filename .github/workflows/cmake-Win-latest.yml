@@ -55,7 +55,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         # Artifact name
-        name: OCVWarpWin
+        name: testaccelWin
         # optional, default is artifact
         # A file, directory or wildcard pattern that describes what to upload
         path: build/*.exe

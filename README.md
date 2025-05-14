@@ -1,28 +1,30 @@
-# OCVWarp
-Warping images and videos for planetarium fulldome display using OpenCV. Windows and Linux binaries are available in [Releases](https://github.com/hn-88/OCVWarp/releases). The [wiki](https://github.com/hn-88/OCVWarp/wiki) has some more information. 
-
-In case you want to build your own binaries, if OpenCV and CMake are installed on your system, instructions for building:
-
+# test OpenCV videoio acceleration sample
+Output on Windows, with Intel integrated graphics,
 ```
-cd build
-cmake ..
-make OCVWarp.bin
-```
-Initial behaviour and parameters are set using OCVWarp.ini in the build folder. Please see [transformtype.txt](https://github.com/hn-88/OCVWarp/blob/master/build/transformtype.txt) for supported transforms. 
+testaccel
+VideoCapture backend = MSMF
+VideoCapture acceleration = d3d11
+VideoCapture acceleration device = 0
 
-A file open dialog asks you for the input ini file, then for the input video file, and finally the filename of the desired output file. The codec used for the output is the same codec as for the input if available on your system, or as chosen in the ini file. (If the input file's codec is not available, the output is saved as an uncompressed avi, which can quickly become huge.)
-
-Keyboard commands are
+Starting frame loop. Press ESC to exit
+FPS(last 0.51 sec) = 35.06
+FPS(last 0.53 sec) = 28.19
+FPS(last 0.52 sec) = 30.86
+FPS(last 0.53 sec) = 30.22
+FPS(last 0.51 sec) = 29.67
+FPS(last 0.50 sec) = 29.93
+FPS(last 0.54 sec) = 29.88
+FPS(last 1.26 sec) = 3.96
+FPS(last 0.51 sec) = 29.43
+FPS(last 0.52 sec) = 30.53
+FPS(last 0.52 sec) = 31.05
+FPS(last 0.50 sec) = 29.86
+FPS(last 0.53 sec) = 28.48
+FPS(last 0.51 sec) = 31.08
+FPS(last 0.50 sec) = 29.83 
+#Pressed m to ->
+Switched to CPU mode
+FPS(last 0.51 sec) = 29.51
+FPS(last 0.54 sec) = 29.74
+FPS(last 0.53 sec) = 30.32
 ```
-ESC, x or X to exit
-u, + or =   to increase angley by 1 degree - the angle seen vertically in output
-m, - or _   to decrease angley by 1 degree 
-U           to increase angley by 10 degrees
-M           to decrease angley by 10 degrees
-k, ] or }   to increase anglex by 1 degree - the angle seen horizontally in output
-h, [ or {   to decrease anglex by 1 degree - the angle seen horizontally in output
-K           to increase anglex by 10 degrees
-H           to decrease anglex by 10 degrees
-d or D      to toggle display of warped file. Turning off display marginally increases processing speed.
-```
-

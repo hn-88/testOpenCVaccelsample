@@ -91,12 +91,19 @@ jobs:
         mkdir -p appdir/usr/bin ; strip OCVWarp.bin ; cp OCVWarp.bin ./appdir/usr/bin/OCVWarp.bin
         mkdir -p appdir/usr/share/applications ; cp ../appdir/OCVWarp.desktop ./appdir/usr/share/applications/
         mkdir -p appdir/usr/share/icons/hicolor/256x256/apps ; cp ../appdir/OCVWarp.png ./appdir/usr/share/icons/hicolor/256x256/apps/
-        wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
-        chmod a+x linuxdeployqt-continuous-x86_64.AppImage
-        unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
+        # Since this appimage gives errors with GStreamer version etc, trying to bundle everything instead.
+        # wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
+        # chmod a+x linuxdeployqt-continuous-x86_64.AppImage
+        # unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
         export VERSION=$(git rev-parse --short HEAD) # linuxdeployqt uses this for naming the file
-        ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -bundle-non-qt-libs
-        ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage
+        # ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -bundle-non-qt-libs
+        # ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage
+        # https://github.com/probonopd/go-appimage/blob/master/src/appimagetool/README.md
+        wget -c https://github.com/$(wget -q https://github.com/probonopd/go-appimage/releases/expanded_assets/continuous -O - | grep "appimagetool-.*-x86_64.AppImage" | head -n 1 | cut -d '"' -f 2)
+        chmod +x appimagetool-*.AppImage
+        ./appimagetool-*.AppImage -s deploy appdir/usr/share/applications/*.desktop # Bundle EVERYTHING
+        # create appimage
+        ./appimagetool-*.AppImage ./appdir
         mv OCVWarp*.AppImage testingaccel-x86_64.AppImage -v
 
     - name: Upload a Build Artifact
